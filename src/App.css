@@ -19,6 +19,15 @@ html,body,#root{
 
   height:100vh;
   position:relative;
+
+}
+
+.container .canvas .actualCanvas{
+
+  height:100%;
+  width:100%;
+  position:absolute;
+  z-index:999;
 }
 
 .container .canvas .title{
@@ -31,6 +40,7 @@ html,body,#root{
     display:grid;
     grid-template-columns: 1% 98% 1%;
     padding:0 15px;
+    z-index:0;
 }
 
 .container .canvas .title .line{

@@ -1,5 +1,5 @@
 import { Canvas, extend, useFrame, useLoader } from "@react-three/fiber";
-import React, { useRef, Suspense } from "react";
+import React, { useRef, useState, Suspense } from "react";
 
 import { shaderMaterial } from "@react-three/drei";
 import glsl from "babel-plugin-glsl/macro";
@@ -66,20 +66,40 @@ import { OrbitControls } from "@react-three/drei";
 //     </Canvas>
 //   );
 // };
-
+const BlobHover = () => {
+  console.log("hello");
+};
 const Blobs = () => {
   const blobRef = useRef();
-  console.log(blobRef);
-  useFrame((clock) => {
-    blobRef.current.rotation.x = blobRef.current.rotation.z += 0.006;
-  });
-
+  const blobRef2 = useRef();
+  const [click, setClick] = useState(true);
+  const [hover, setHover] = useState(false);
+  useFrame(
+    (clock) => {
+      if (click) {
+        blobRef.current.rotation.x = blobRef.current.rotation.z += 0.006;
+      }
+    },
+    [click]
+  );
+  useFrame(() => {
+    if (hover) {
+      blobRef2.current.rotation.x += 0.006;
+    }
+  }, [hover]);
   return (
     <>
-      <mesh ref={blobRef}>
+      <mesh ref={blobRef} onClick={()=>{setClick(!click)}}>
         <Model />
       </mesh>
-      <Model position={[10, 0, 0]} />
+      <mesh
+        ref={blobRef2}
+        position={[10, 0, 0]}
+        onPointerOver={(e) => setHover(true)}
+        onPointerOut={(e) => setHover(false)}
+      >
+        <Model />
+      </mesh>
     </>
   );
 };
@@ -87,25 +107,24 @@ function App() {
   return (
     <>
       <div className="container">
-        
         <div className="canvas">
-          <Canvas camera={{ fov: 70, position: [-1, 0, 10] }}>
-            <directionalLight intensity={1} position={[10, 10, 10]} />
-            <ambientLight intensity={1} />
-            <Blobs />
-            {/* <OrbitControls /> */}
-          </Canvas>
-          <div className="title">
-           <div className="line"></div>
-          <div className="actualTitle">
-            <h1>EMRE KELLECI</h1>
-            <div className="middleLine"></div>
+          <div className="actualCanvas">
+            <Canvas camera={{ fov: 70, position: [-1, 0, 10] }}>
+              <directionalLight intensity={1} position={[10, 10, 10]} />
+              <ambientLight intensity={1} />
+              <Blobs />
+              {/* <OrbitControls /> */}
+            </Canvas>
           </div>
-          <div className="line2"></div>
-
+          <div className="title">
+            <div className="line"></div>
+            <div className="actualTitle">
+              <h1>EMRE KELLECI</h1>
+              <div className="middleLine"></div>
+            </div>
+            <div className="line2"></div>
+          </div>
         </div>
-        </div>
-        <h1> Hello </h1>
       </div>
     </>
   );
